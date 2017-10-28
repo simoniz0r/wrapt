@@ -21,7 +21,7 @@ _wrapt () {
             compadd "$@" $(echo $(apt-cache pkgnames))
             ;;
         -m)
-            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -sa -sm -su")
+            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -sa -sd -sm -su")
             ;;
         -r)
             compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -ar -arp -p")
