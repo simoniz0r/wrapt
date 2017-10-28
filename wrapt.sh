@@ -31,7 +31,7 @@ wrapt -es  - apt edit-sources - edit the source information file
 "
 }
 
-if type wrapt >/dev/null 2>&1 && type zsh >/dev/null 2>&1; then
+if type wrapt >/dev/null 2>&1 && type zsh >/dev/null 2>&1 && ! grep -q 'wrapt' ~/.zshrc; then
     wget -qO ~/.wrapt.comp "https://raw.githubusercontent.com/simoniz0r/wrapt/master/wrapt.comp"
     echo "" >> ~/.zshrc
     echo "if [ -f "$HOME/.wrapt.comp" ]; then" >> ~/.zshrc
