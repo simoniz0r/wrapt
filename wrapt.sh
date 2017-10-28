@@ -118,11 +118,11 @@ case $1 in
                 ARGS="$(echo $@ | cut -f3- -d' ')"
                 apt remove --purge "$ARGS"
                 ;;
-            -ar)
+            -ra)
                 ARGS="$(echo $@ | cut -f3- -d' ')"
                 apt remove --autoremove "$ARGS"
                 ;;
-            -arp)
+            -rap)
                 ARGS="$(echo $@ | cut -f3- -d' ')"
                 apt remove --purge --autoremove "$ARGS"
                 ;;
@@ -144,13 +144,13 @@ case $1 in
         apt update "$ARGS" && sudo apt upgrade "$ARGS"
         ;;
     -fu)
-        apt full-upgrade
+        apt full-upgrade "$ARGS"
         ;;
     -ar)
         apt-add-repository "$ARGS"
         ;;
     -es)
-        apt edit-sources
+        apt edit-sources "$ARGS"
         ;;
     -h|*)
         helpfunc

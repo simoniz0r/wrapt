@@ -24,7 +24,7 @@ _wrapt () {
             compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -sa -sd -sm -su")
             ;;
         -r)
-            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -ar -arp -p")
+            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -ra -rap -p")
             ;;
         -L|-ra|-ud|-ug|-uu|-fu)
             compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall)")
