@@ -173,6 +173,10 @@ case $1 in
         apt edit-sources "$ARGS"
         ;;
     -h|*)
+        if grep -q 'wrapt' ~/.zshrc; then
+            rm -f "$HOME"/.wrapt.comp
+            wget -qO ~/.wrapt.comp "https://raw.githubusercontent.com/simoniz0r/wrapt/master/wrapt.comp"
+        fi
         helpfunc
         ;;
 esac    
