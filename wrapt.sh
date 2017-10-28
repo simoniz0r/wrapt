@@ -97,7 +97,7 @@ case $1 in
                 ARGS="$(echo $@ | cut -f3- -d' ')"
                 comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
                 ;;
-            -sd)
+            -sd*)
                 ARGS="$(echo $@ | cut -f3- -d' ')"
                 comm -23 <(apt-mark showauto | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
                 ;;
@@ -114,15 +114,15 @@ case $1 in
         ;;
     -r)
         case $ARGS in
-            -p)
+            -p*)
                 ARGS="$(echo $@ | cut -f3- -d' ')"
                 apt remove --purge "$ARGS"
                 ;;
-            -ra)
+            -ra*)
                 ARGS="$(echo $@ | cut -f3- -d' ')"
                 apt remove --autoremove "$ARGS"
                 ;;
-            -rap)
+            -rap*)
                 ARGS="$(echo $@ | cut -f3- -d' ')"
                 apt remove --purge --autoremove "$ARGS"
                 ;;
