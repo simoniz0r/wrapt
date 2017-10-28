@@ -1,0 +1,37 @@
+#!/bin/bash
+# wrapt - a simple wrapper for apt that brings all useful apt commands into one easy to use script
+# Created by simonizor
+# License: GPLv2 Only
+
+_wrapt () {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+ 
+    _arguments \
+        '1: :->args'\
+        '2: :->input'
+ 
+    case $state in
+    args)
+        _arguments '1:arguments:(-h -l -li -S -L -sd -srd -se -sh -m -i -deb -r -ra -ud -ug -uu -fu -ar -es)'
+        ;;
+    *)
+        case $words[2] in
+        -l)
+            compadd "$@" $(echo $(apt-cache pkgnames))
+            ;;
+        -m)
+            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -sa -sm -su")
+            ;;
+        -r)
+            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -ar -arp -p")
+            ;;
+        -L|-ra|ud|ug|uu|fu)
+            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall)")
+            ;;
+        -i|-sd|-srd|-se|-sh)
+            compadd "$@" $(echo "$(apt-cache pkgnames)")
+            ;;
+        esac
+    esac
+}
