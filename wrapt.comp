@@ -32,6 +32,9 @@ _wrapt () {
         -i|-sd|-srd|-se|-sh)
             compadd "$@" $(echo "$(apt-cache pkgnames)")
             ;;
+        *)
+            _files
+            ;;
         esac
     esac
 }
