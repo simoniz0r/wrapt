@@ -5,7 +5,7 @@
 
 helpfunc () {
 printf "
-wrapt - http://www.simonizor.gq/scripts
+wrapt - http://www.simonizor.gq
 A simple wrapper for apt that brings all useful apt commands into one easy to use script
 
 wrapt      - Show this help output (alias: wrapt -help)
