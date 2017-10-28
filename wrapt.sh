@@ -44,7 +44,15 @@ fi
 ARGS="$(echo $@ | cut -f2- -d' ')"
 case $1 in
     -l)
-        apt list "$ARGS"
+        case $ARGS in
+            -a*)
+                ARGS="$(echo $@ | cut -f3- -d' ')"
+                apt list -a "$ARGS"
+                ;;
+            *)
+                apt list "$ARGS"
+                ;;
+        esac
         ;;
     -li)
         dpkg --get-selections | grep -v deinstall
@@ -65,7 +73,15 @@ case $1 in
         apt search "$ARGS"
         ;;
     -sh)
-        apt show "$ARGS"
+        case $ARGS in
+            -a*)
+                ARGS="$(echo $@ | cut -f3- -d' ')"
+                apt show -a "$ARGS"
+                ;;
+            *)
+                apt show "$ARGS"
+                ;;
+        esac
         ;;
     -m)
         case $ARGS in
