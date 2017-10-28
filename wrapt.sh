@@ -85,13 +85,29 @@ case $1 in
         ;;
     -m)
         case $ARGS in
+            -a*)
+                ARGS="$(echo $@ | cut -f3- -d' ')"
+                apt-mark auto "$ARGS"
+                ;;
+            -h*)
+                ARGS="$(echo $@ | cut -f3- -d' ')"
+                apt-mark hold "$ARGS"
+                ;;
+            -m*)
+                ARGS="$(echo $@ | cut -f3- -d' ')"
+                apt-mark manual "$ARGS"
+                ;;
+            -sh*)
+                ARGS="$(echo $@ | cut -f3- -d' ')"
+                apt-mark showhold "$ARGS"
+                ;;
             -sa*)
                 ARGS="$(echo $@ | cut -f3- -d' ')"
-                apt mark showauto "$ARGS"
+                apt-mark showauto "$ARGS"
                 ;;
             -sm*)
                 ARGS="$(echo $@ | cut -f3- -d' ')"
-                apt mark showmanual "$ARGS"
+                apt-mark showmanual "$ARGS"
                 ;;
             -su*)
                 ARGS="$(echo $@ | cut -f3- -d' ')"
@@ -101,8 +117,12 @@ case $1 in
                 ARGS="$(echo $@ | cut -f3- -d' ')"
                 comm -23 <(apt-mark showauto | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
                 ;;
+            -u*)
+                ARGS="$(echo $@ | cut -f3- -d' ')"
+                apt-mark unhold "$ARGS"
+                ;;
             *)
-                apt mark "$ARGS"
+                apt-mark "$ARGS"
                 ;;
         esac
         ;;

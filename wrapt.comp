@@ -21,7 +21,7 @@ _wrapt () {
             compadd "$@" $(echo "$(apt-cache pkgnames)" | grep "${words[3]}")
             ;;
         -m)
-            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -sa -sd -sm -su auto hold manual showauto showhold showmanual unhold" | grep "${words[3]}\|${words[4]}\|${words[5]}\|${words[6]}\|${words[7]}\|${words[8]}\|${words[9]}\|${words[10]}")
+            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -sa -sd -sm -su -a -h -m -sh -u" | grep "${words[3]}\|${words[4]}\|${words[5]}\|${words[6]}\|${words[7]}\|${words[8]}\|${words[9]}\|${words[10]}")
             ;;
         -r)
             compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -ra -rap -p" | grep "${words[3]}\|${words[4]}\|${words[5]}\|${words[6]}\|${words[7]}\|${words[8]}\|${words[9]}\|${words[10]}")
