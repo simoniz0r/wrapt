@@ -26,7 +26,7 @@ wrapt -ud  - apt update - update list of available packages
 wrapt -ug  - apt upgrade - upgrade the system by installing/upgrading packages
 wrapt -uu  - apt update && apt upgrade - run apt update and then apt upgrade
 wrapt -fu  - apt full-upgrade - fully upgrade the system by removing/installing/upgrading packages
-wrapt -ar  - apt -add-repository - wrapt -add-repository is a script for adding apt sources.list entries
+wrapt -ar  - apt-add-repository - wrapt -add-repository is a script for adding apt sources.list entries
 wrapt -es  - apt edit-sources - edit the source information file
 "
 }
