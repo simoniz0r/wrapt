@@ -18,19 +18,19 @@ _wrapt () {
     *)
         case $words[2] in
         -l)
-            compadd "$@" $(echo $(apt-cache pkgnames))
+            compadd "$@" $(echo "$(apt-cache pkgnames)" | grep "${words[@]:2}")
             ;;
         -m)
-            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -sa -sd -sm -su")
+            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -sa -sd -sm -su" | grep "${words[@]:2}")
             ;;
         -r)
-            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -ra -rap -p")
+            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -ra -rap -p" | grep "${words[@]:2}")
             ;;
         -L|-ra|-ud|-ug|-uu|-fu)
-            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall)")
+            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall)" | grep "${words[@]:2}")
             ;;
         -i|-sd|-srd|-se|-sh)
-            compadd "$@" $(echo "$(apt-cache pkgnames)")
+            compadd "$@" $(echo "$(apt-cache pkgnames)" | grep "${words[@]:2}")
             ;;
         *)
             _files
