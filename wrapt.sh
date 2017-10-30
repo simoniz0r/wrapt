@@ -41,13 +41,13 @@ if type wrapt >/dev/null 2>&1 && type zsh >/dev/null 2>&1 && ! grep -q 'wrapt' ~
     echo "" >> ~/.zshrc
 fi
 
-ARGS=($@)
-ARGS="${ARGS[@]:1}"
+INPUT_ARGS=($@)
+ARGS="${INPUT_ARGS[@]:1}"
 case $1 in
     -l)
         case $ARGS in
             -a*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 apt list -a "$ARGS"
                 ;;
             *)
@@ -76,7 +76,7 @@ case $1 in
     -sh)
         case $ARGS in
             -a*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 apt show -a "$ARGS"
                 ;;
             *)
@@ -87,39 +87,39 @@ case $1 in
     -m)
         case $ARGS in
             -a*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 apt-mark auto "$ARGS"
                 ;;
             -h*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 apt-mark hold "$ARGS"
                 ;;
             -m*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 apt-mark manual "$ARGS"
                 ;;
             -sh*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 apt-mark showhold "$ARGS"
                 ;;
             -sa*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 apt-mark showauto "$ARGS"
                 ;;
             -sm*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 apt-mark showmanual "$ARGS"
                 ;;
             -su*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
                 ;;
             -sd*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 comm -23 <(apt-mark showauto | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
                 ;;
             -u*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 apt-mark unhold "$ARGS"
                 ;;
             *)
@@ -136,15 +136,15 @@ case $1 in
     -r)
         case $ARGS in
             -p*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 apt remove --purge "$ARGS"
                 ;;
             -ra*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 apt remove --autoremove "$ARGS"
                 ;;
             -rap*)
-                ARGS="${ARGS[@]:2}"
+                ARGS="${INPUT_ARGS[@]:2}"
                 apt remove --purge --autoremove "$ARGS"
                 ;;
             *)
