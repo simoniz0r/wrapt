@@ -156,13 +156,13 @@ case $1 in
         apt autoremove "$ARGS"
         ;;
     -ud)
-        apt update "$ARGS"
+        apt update
         ;;
     -ug)
         apt upgrade "$ARGS"
         ;;
     -uu)
-        apt update "$ARGS" && sudo apt upgrade "$ARGS"
+        apt update && sudo apt upgrade "$ARGS"
         ;;
     -fu)
         apt full-upgrade "$ARGS"
