@@ -11,7 +11,7 @@ A simple wrapper for apt that brings all useful apt commands into one easy to us
 wrapt      - Show this help output (alias: wrapt -h)
 wrapt -l   - apt list - List packages based on package names
 wrapt -li  - dpkg --get-selections | grep -v deinstall - List all installed packages
-wrapt -lf   - dpkg -L - List files installed by a package
+wrapt -lf  - dpkg -L - List files installed by a package
 wrapt -s   - apt search - Search in package descriptions
 wrapt -sh  - apt show - Show package details
 wrapt -sp  - dpkg -S - Show which package a file belongs to
