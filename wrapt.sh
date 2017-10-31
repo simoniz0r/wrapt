@@ -11,23 +11,23 @@ A simple wrapper for apt that brings all useful apt commands into one easy to us
 wrapt      - Show this help output (alias: wrapt -h)
 wrapt -l   - apt list - List packages based on package names
 wrapt -li  - dpkg --get-selections | grep -v deinstall - List all installed packages
-wrapt -S   - dpkg -S - Show which package a file belongs to
-wrapt -L   - dpkg -L - List files installed by a package
+wrapt -lf   - dpkg -L - List files installed by a package
+wrapt -s   - apt search - Search in package descriptions
+wrapt -sh  - apt show - Show package details
+wrapt -sp  - dpkg -S - Show which package a file belongs to
 wrapt -sd  - apt-cache depends - List dependencies of a package
 wrapt -srd - apt-cache rdepends - List reverse dependencies of a package
-wrapt -se  - apt search - Search in package descriptions
-wrapt -sh  - apt show - Show package details
 wrapt -m   - apt-mark - Simple command line interface for marking packages as manually or automatically installed
 wrapt -i   - apt install - Install packages
-wrapt -deb - dpkg -i || apt install -f - Install deb package and run apt install -f to install dependencies
+wrapt -id  - dpkg -i || apt install -f - Install deb package and run apt install -f to install dependencies
 wrapt -r   - apt remove - Remove packages
 wrapt -ra  - apt autoremove - Remove automatically all unused packages
+wrapt -u   - apt update && apt upgrade - Run apt update and then apt upgrade
 wrapt -ud  - apt update - Update list of available packages
 wrapt -ug  - apt upgrade - Upgrade the system by installing/upgrading packages
-wrapt -uu  - apt update && apt upgrade - Run apt update and then apt upgrade
 wrapt -fu  - apt full-upgrade - Fully upgrade the system by removing/installing/upgrading packages
-wrapt -ar  - apt-add-repository - A script for adding apt sources.list entries
-wrapt -es  - apt edit-sources - Edit the source information file
+wrapt -add - apt-add-repository - A script for adding apt sources.list entries
+wrapt -ed  - apt edit-sources - Edit the source information file
 "
 }
 
@@ -58,19 +58,10 @@ case $1 in
     -li)
         dpkg --get-selections | grep -v deinstall
         ;;
-    -S)
-        dpkg -S "$ARGS"
-        ;;
-    -L)
+    -lf)
         dpkg -L "$ARGS"
         ;;
-    -sd)
-        apt-cache depends "$ARGS"
-        ;;
-    -srd)
-        apt-cache rdepends "$ARGS"
-        ;;
-    -se)
+    -s)
         apt search "$ARGS"
         ;;
     -sh)
@@ -83,6 +74,15 @@ case $1 in
                 apt show "$ARGS"
                 ;;
         esac
+        ;;
+    -sp)
+        dpkg -S "$ARGS"
+        ;;
+    -sd)
+        apt-cache depends "$ARGS"
+        ;;
+    -srd)
+        apt-cache rdepends "$ARGS"
         ;;
     -m)
         case $ARGS in
@@ -130,7 +130,7 @@ case $1 in
     -i)
         apt install "$ARGS"
         ;;
-    -deb)
+    -deb|-id)
         dpkg -i "$ARGS" || sudo apt install -f
         ;;
     -r)
@@ -152,8 +152,11 @@ case $1 in
                 ;;
         esac
         ;;
-    -ra)
+    -ra|-ar)
         apt autoremove "$ARGS"
+        ;;
+    -u)
+        apt update && sudo apt upgrade "$ARGS"
         ;;
     -ud)
         apt update
@@ -161,16 +164,13 @@ case $1 in
     -ug)
         apt upgrade "$ARGS"
         ;;
-    -uu)
-        apt update && sudo apt upgrade "$ARGS"
-        ;;
     -fu)
         apt full-upgrade "$ARGS"
         ;;
-    -ar)
+    -add)
         apt-add-repository "$ARGS"
         ;;
-    -es)
+    -ed|-es)
         apt edit-sources "$ARGS"
         ;;
     -h|*)
