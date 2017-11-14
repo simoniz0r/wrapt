@@ -21,6 +21,7 @@ wrapt -m   - apt-mark - Simple command line interface for marking packages as ma
 wrapt -i   - apt install - Install packages
 wrapt -id  - dpkg -i || apt install -f - Install deb package and run apt install -f to install dependencies
 wrapt -r   - apt remove - Remove packages
+wrapt -rap - apt remove --autoremove --purge - Remove packages, unused packages, and purge package config files
 wrapt -ra  - apt autoremove - Remove automatically all unused packages
 wrapt -u   - apt update && apt upgrade - Run apt update and then apt upgrade
 wrapt -ud  - apt update - Update list of available packages
@@ -143,14 +144,13 @@ case $1 in
                 ARGS="${INPUT_ARGS[@]:2}"
                 apt remove --autoremove "$ARGS"
                 ;;
-            -rap*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                apt remove --purge --autoremove "$ARGS"
-                ;;
             *)
                 apt remove "$ARGS"
                 ;;
         esac
+        ;;
+    -rap*|-arp)
+        apt remove --purge --autoremove "$ARGS"
         ;;
     -ra|-ar)
         apt autoremove "$ARGS"

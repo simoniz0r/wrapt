@@ -13,7 +13,7 @@ _wrapt () {
  
     case $state in
     args)
-        _arguments '1:arguments:(-h -l -li -lf -s -sd -srd -sp -sh -m -i -id -deb -r -ra -u -ud -ug -fu -add -ed)'
+        _arguments '1:arguments:(-h -l -li -lf -s -sd -srd -sp -sh -m -i -id -deb -r -ra -rap -u -ud -ug -fu -add -ed)'
         ;;
     *)
         case $words[2] in
@@ -24,9 +24,9 @@ _wrapt () {
             compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -sa -sd -sm -su -a -h -m -sh -u")
             ;;
         -r)
-            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -ra -rap -p")
+            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -ra -p")
             ;;
-        -lf|-ra|-ud|-ug|-u|-fu)
+        -lf|-ra|-rap|-ud|-ug|-u|-fu)
             compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall)")
             ;;
         -i|-sd|-srd|-s|-sh)
