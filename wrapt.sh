@@ -12,13 +12,15 @@ wrapt              - Show this help output (alias: wrapt -h)
 wrapt list,l       - apt list - List packages based on package names
     list arguments:
     --installed, -i   - dpkg --get-selections | grep -v deinstall - List all installed packages
+
+wrapt search, se    - apt search - Search in package descriptions
+wrapt info, show    - apt show - Show package details
+    info arguments:
     --files, -f       - dpkg -L - List files installed by a package
     --provides, -p    - dpkg -S - Show which package a file belongs to
     --depends, -d     - apt-cache depends - List dependencies of a package
     --rdepends, -rd   - apt-cache rdepends - List reverse dependencies of a package
 
-wrapt search, se    - apt search - Search in package descriptions
-wrapt info, show    - apt show - Show package details
 wrapt mark, m       - apt-mark - Simple command line interface for marking packages as manually or automatically installed
     mark arguments: 
     --auto, -a        - apt-mark showauto
@@ -92,7 +94,28 @@ case $1 in
         ;;
     info|show)
         shift
-        apt show "$@"
+        case $1 in
+            -f|--files)
+                shift
+                dpkg -L "$@"
+                ;;
+            -p|--provides)
+                shift
+                dpkg -S "$@"
+                ;;
+            -d|--depends)
+                shift
+                apt-cache depends "$@"
+                ;;
+            -rd|--rdepends)
+                shift
+                apt-cache rdepends "$@"
+                ;;
+            *)
+                shift
+                apt show "$@"
+                ;;
+        esac
         ;;
     m|mark)
         shift
