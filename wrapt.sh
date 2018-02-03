@@ -83,7 +83,6 @@ case $1 in
                 apt-cache rdepends "$@"
                 ;;
             *)
-                shift
                 apt list "$@"
                 ;;
         esac
