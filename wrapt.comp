@@ -19,6 +19,7 @@ _wrapt () {
         case $words[2] in
         list|l)
             compadd "$@" $(echo "$(apt-cache pkgnames) --installed")
+            ;;
         info|show)
             compadd "$@" $(echo "$(apt-cache pkgnames) --files --provides --depends --rdepends")
             case $words[3] in
