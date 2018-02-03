@@ -13,24 +13,40 @@ _wrapt () {
  
     case $state in
     args)
-        _arguments '1:arguments:(-h -l -li -lf -s -sd -srd -sp -sh -m -i -id -deb -r -ra -rap -u -ud -ug -fu -add -ed)'
+        _arguments '1:arguments:(list search info mark install remove aremove paremove update fupdate addrepo)'
         ;;
     *)
         case $words[2] in
-        -l)
-            compadd "$@" $(echo "$(apt-cache pkgnames) -a")
+        list|l)
+            compadd "$@" $(echo "$(apt-cache pkgnames) --installed --files --provides --depends --rdepends")
+            case $words[3] in
+                *)
+                    compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall)")
+                    ;;
+            esac
             ;;
-        -m)
-            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -sa -sd -sm -su -a -h -m -sh -u")
+        mark|m)
+            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) --showauto --showmanual --auto --hold --manual --showhold --unhold")
+            case $words[3] in
+                *)
+                    compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall)")
+                    ;;
+            esac
             ;;
-        -r)
-            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) -ra -p")
+        remove|rm|aremove|ar|paremove|par)
+            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall) --purge --auto --pauto")
+            case $words[3] in
+                *)
+                    compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall)")
+                    ;;
+            esac
             ;;
-        -lf|-ra|-rap|-ud|-ug|-u|-fu)
-            compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall)")
-            ;;
-        -i|-sd|-srd|-s|-sh)
+        search|se|info|show)
             compadd "$@" $(echo "$(apt-cache pkgnames)")
+            ;;
+        install|in)
+            compadd "$@" $(echo "$(apt-cache pkgnames)")
+            _files
             ;;
         *)
             _files

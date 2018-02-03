@@ -8,27 +8,39 @@ printf "
 wrapt - http://www.simonizor.gq
 A simple wrapper for apt that brings all useful apt commands into one easy to use script
 
-wrapt      - Show this help output (alias: wrapt -h)
-wrapt -l   - apt list - List packages based on package names
-wrapt -li  - dpkg --get-selections | grep -v deinstall - List all installed packages
-wrapt -lf  - dpkg -L - List files installed by a package
-wrapt -s   - apt search - Search in package descriptions
-wrapt -sh  - apt show - Show package details
-wrapt -sp  - dpkg -S - Show which package a file belongs to
-wrapt -sd  - apt-cache depends - List dependencies of a package
-wrapt -srd - apt-cache rdepends - List reverse dependencies of a package
-wrapt -m   - apt-mark - Simple command line interface for marking packages as manually or automatically installed
-wrapt -i   - apt install - Install packages
-wrapt -id  - dpkg -i || apt install -f - Install deb package and run apt install -f to install dependencies
-wrapt -r   - apt remove - Remove packages
-wrapt -rap - apt remove --autoremove --purge - Remove packages, unused packages, and purge package config files
-wrapt -ra  - apt autoremove - Remove automatically all unused packages
-wrapt -u   - apt update && apt upgrade - Run apt update and then apt upgrade
-wrapt -ud  - apt update - Update list of available packages
-wrapt -ug  - apt upgrade - Upgrade the system by installing/upgrading packages
-wrapt -fu  - apt full-upgrade - Fully upgrade the system by removing/installing/upgrading packages
-wrapt -add - apt-add-repository - A script for adding apt sources.list entries
-wrapt -ed  - apt edit-sources - Edit the source information file
+wrapt              - Show this help output (alias: wrapt -h)
+wrapt list,l       - apt list - List packages based on package names
+    list arguments:
+    --installed, -i   - dpkg --get-selections | grep -v deinstall - List all installed packages
+    --files, -f       - dpkg -L - List files installed by a package
+    --provides, -p    - dpkg -S - Show which package a file belongs to
+    --depends, -d     - apt-cache depends - List dependencies of a package
+    --rdepends, -rd   - apt-cache rdepends - List reverse dependencies of a package
+
+wrapt search, se    - apt search - Search in package descriptions
+wrapt info, show    - apt show - Show package details
+wrapt mark, m       - apt-mark - Simple command line interface for marking packages as manually or automatically installed
+    mark arguments: 
+    --auto, -a        - apt-mark showauto
+    --manual, -m      - apt-mark showmanual
+    --hold, -h        - apt-mark hold
+    --unhold, -u      - apt-mark unhold
+    --showhold, -sh   - apt-mark showhold
+    --showauto, -sa   - apt-mark showauto
+    --showmanual, -sm - apt-mark showmanual
+
+wrapt install, in   - apt install - Install packages
+wrapt remove, rm    - apt remove - Remove packages
+    remove arguments:
+    --purge, -p       - apt remove --purge
+    --auto, -ar       - apt remove --autoremove
+    --pauto, -par     - apt remove --purge --autoremove
+
+wrapt aremove, ar   - apt autoremove - Remove automatically all unused packages
+wrapt paremove, par - apt remove --autoremove --purge - Remove packages, unused packages, and purge package config files
+wrapt update, up    - apt update && apt upgrade - Run apt update and then apt upgrade
+wrapt fupdate, fu   - apt full-upgrade - Fully upgrade the system by removing/installing/upgrading packages
+wrapt addrepo, add  - apt-add-repository - A script for adding apt sources.list entries
 "
 }
 
@@ -42,138 +54,127 @@ if type wrapt >/dev/null 2>&1 && type zsh >/dev/null 2>&1 && ! grep -q 'wrapt' ~
     echo "" >> ~/.zshrc
 fi
 
-INPUT_ARGS=($@)
-ARGS="${INPUT_ARGS[@]:1}"
+# INPUT_@=($@)
+# @="${INPUT_@[@]:1}"
 case $1 in
-    -l)
-        case $ARGS in
-            -a*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                apt list -a "$ARGS"
+    l|list)
+        shift
+        case $1 in
+            -i|--installed)
+                shift
+                dpkg --get-selections | grep -v deinstall
+                ;;
+            -f|--files)
+                shift
+                dpkg -L "$@"
+                ;;
+            -p|--provides)
+                shift
+                dpkg -S "$@"
+                ;;
+            -d|--depends)
+                shift
+                apt-cache depends "$@"
+                ;;
+            -rd|--rdepends)
+                shift
+                apt-cache rdepends "$@"
                 ;;
             *)
-                apt list "$ARGS"
+                shift
+                apt list "$@"
                 ;;
         esac
         ;;
-    -li)
-        dpkg --get-selections | grep -v deinstall
+    se|search)
+        shift
+        apt search "$@"
         ;;
-    -lf)
-        dpkg -L "$ARGS"
+    info|show)
+        shift
+        apt show "$@"
         ;;
-    -s)
-        apt search "$ARGS"
-        ;;
-    -sh)
-        case $ARGS in
-            -a*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                apt show -a "$ARGS"
+    m|mark)
+        shift
+        case $1 in
+            -a|--auto)
+                shift
+                apt-mark auto "$@"
+                ;;
+            -h|--hold)
+                shift
+                apt-mark hold "$@"
+                ;;
+            -m|--manual)
+                shift
+                apt-mark manual "$@"
+                ;;
+            -sh|--showhold)
+                shift
+                apt-mark showhold "$@"
+                ;;
+            -sa|--showauto)
+                shift
+                apt-mark showauto "$@"
+                ;;
+            -sm|--showmanual)
+                shift
+                apt-mark showmanual "$@"
+                ;;
+            -u|--unhold)
+                shift
+                apt-mark unhold "$@"
                 ;;
             *)
-                apt show "$ARGS"
+                apt-mark "$@"
                 ;;
         esac
         ;;
-    -sp)
-        dpkg -S "$ARGS"
+    in|install)
+        shift
+        apt install "$@"
         ;;
-    -sd)
-        apt-cache depends "$ARGS"
-        ;;
-    -srd)
-        apt-cache rdepends "$ARGS"
-        ;;
-    -m)
-        case $ARGS in
-            -a*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                apt-mark auto "$ARGS"
+    rm|remove)
+        shift
+        case $1 in
+            -p|--purge)
+                shift
+                apt remove --purge "$@"
                 ;;
-            -h*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                apt-mark hold "$ARGS"
+            -ar|--auto)
+                shift
+                apt remove --autoremove "$@"
                 ;;
-            -m*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                apt-mark manual "$ARGS"
-                ;;
-            -sh*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                apt-mark showhold "$ARGS"
-                ;;
-            -sa*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                apt-mark showauto "$ARGS"
-                ;;
-            -sm*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                apt-mark showmanual "$ARGS"
-                ;;
-            -su*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
-                ;;
-            -sd*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                comm -23 <(apt-mark showauto | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
-                ;;
-            -u*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                apt-mark unhold "$ARGS"
+            -par|--pauto)
+                shift
+                apt remove --purge --autoremove "$@"
                 ;;
             *)
-                apt-mark "$ARGS"
+                apt remove "$@"
                 ;;
         esac
         ;;
-    -i)
-        apt install "$ARGS"
+    par|paremove)
+        shift
+        apt remove --purge --autoremove "$@"
         ;;
-    -deb|-id)
-        dpkg -i "$ARGS" || sudo apt install -f
+    ar|aremove)
+        shift
+        apt autoremove "$@"
         ;;
-    -r)
-        case $ARGS in
-            -p*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                apt remove --purge "$ARGS"
-                ;;
-            -ra*)
-                ARGS="${INPUT_ARGS[@]:2}"
-                apt remove --autoremove "$ARGS"
-                ;;
-            *)
-                apt remove "$ARGS"
-                ;;
-        esac
+    up|update)
+        shift
+        apt update && sudo apt upgrade "$@"
         ;;
-    -rap*|-arp)
-        apt remove --purge --autoremove "$ARGS"
+    fu|fupgrade)
+        shift
+        apt full-upgrade "$@"
         ;;
-    -ra|-ar)
-        apt autoremove "$ARGS"
+    add|addrepo)
+        shift
+        apt-add-repository "$@"
         ;;
-    -u)
-        apt update && sudo apt upgrade "$ARGS"
-        ;;
-    -ud)
-        apt update
-        ;;
-    -ug)
-        apt upgrade "$ARGS"
-        ;;
-    -fu)
-        apt full-upgrade "$ARGS"
-        ;;
-    -add)
-        apt-add-repository "$ARGS"
-        ;;
-    -ed|-es)
-        apt edit-sources "$ARGS"
-        ;;
-    -h|*)
+    help|*)
         if grep -q 'wrapt' ~/.zshrc; then
             rm -f "$HOME"/.wrapt.comp
             wget -qO ~/.wrapt.comp "https://raw.githubusercontent.com/simoniz0r/wrapt/master/wrapt.comp"
