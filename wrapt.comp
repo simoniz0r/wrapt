@@ -25,6 +25,7 @@ _wrapt () {
             case $words[3] in
                 *)
                     compadd "$@" $(echo "$(dpkg --get-selections | grep -v deinstall)")
+                    _files
                     ;;
             esac
             ;;
