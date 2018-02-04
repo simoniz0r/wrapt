@@ -55,6 +55,17 @@ if type wrapt >/dev/null 2>&1 && type zsh >/dev/null 2>&1 && ! grep -q 'wrapt' ~
     echo "fi" >> ~/.zshrc
     echo "" >> ~/.zshrc
 fi
+if type wrapt >/dev/null 2>&1 && [ -f ~/.bashrc ] && ! grep -q 'wrapt' ~/.bashrc; then
+    if [ ! -f "$HOME/.wrapt.comp" ]; then
+        wget -qO ~/.wrapt.comp "https://raw.githubusercontent.com/simoniz0r/wrapt/master/wrapt.comp"
+    fi
+    echo "" >> ~/.bashrc
+    echo "if [ -f "$HOME/.wrapt.comp" ]; then" >> ~/.bashrc
+    echo "    source "$HOME"/.wrapt.comp" >> ~/.bashrc
+    echo "    complete -F _wraptbash wrapt" >> ~/.bashrc
+    echo "fi" >> ~/.bashrc
+    echo "" >> ~/.bashrc
+fi
 
 # INPUT_@=($@)
 # @="${INPUT_@[@]:1}"
