@@ -13,7 +13,7 @@ _wrapt () {
  
     case $state in
     args)
-        _arguments '1:arguments:(list search info mark install remove aremove paremove update fupdate addrepo)'
+        _arguments '1:arguments:(list search info mark install remove aremove paremove update fupgrade addrepo)'
         ;;
     *)
         case $words[2] in
@@ -68,7 +68,7 @@ _wraptbash() {
     #
     #  The basic options we'll complete.
     #
-    opts="list search info mark install remove aremove paremove update fupdate addrepo"
+    opts="list search info mark install remove aremove paremove update fupgrade addrepo"
 
 
     #
