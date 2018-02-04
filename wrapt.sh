@@ -41,7 +41,7 @@ wrapt remove, rm    - apt remove - Remove packages
 wrapt aremove, ar   - apt autoremove - Remove automatically all unused packages
 wrapt paremove, par - apt remove --autoremove --purge - Remove packages, unused packages, and purge package config files
 wrapt update, up    - apt update && apt upgrade - Run apt update and then apt upgrade
-wrapt fupdate, fu   - apt full-upgrade - Fully upgrade the system by removing/installing/upgrading packages
+wrapt fupdate, fup  - apt full-upgrade - Fully upgrade the system by removing/installing/upgrading packages
 wrapt addrepo, add  - apt-add-repository - A script for adding apt sources.list entries
 "
 }
@@ -198,9 +198,9 @@ case $1 in
         shift
         apt update && sudo apt upgrade "$@"
         ;;
-    fu|fupgrade)
+    fup|fupgrade)
         shift
-        apt full-upgrade "$@"
+        apt update && sudo apt full-upgrade "$@"
         ;;
     add|addrepo)
         shift
