@@ -7,6 +7,7 @@ all:
 install:
 	@echo 'Installing binary...'
 	@mkdir -p $(DESTDIR)$(PREFIX)/bin
+	@chmod +x wrapt.sh
 	@cp -p wrapt.sh $(DESTDIR)$(PREFIX)/bin/wrapt
 	
 install-bash:
