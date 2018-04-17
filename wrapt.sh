@@ -3,7 +3,7 @@
 # Created by simonizor
 # License: GPLv2 Only
 
-helpfunc () {
+function helpfunc() {
 printf "
 wrapt - http://www.simonizor.gq
 A simple wrapper for apt that brings all useful apt commands into one easy to use script
@@ -46,29 +46,7 @@ wrapt addrepo, add  - apt-add-repository - A script for adding apt sources.list 
 "
 }
 
-if type wrapt >/dev/null 2>&1 && type zsh >/dev/null 2>&1 && ! grep -q 'wrapt' ~/.zshrc; then
-    wget -qO ~/.wrapt.comp "https://raw.githubusercontent.com/simoniz0r/wrapt/master/wrapt.comp"
-    echo "" >> ~/.zshrc
-    echo "if [ -f "$HOME/.wrapt.comp" ]; then" >> ~/.zshrc
-    echo "    source "$HOME"/.wrapt.comp" >> ~/.zshrc
-    echo "    compdef _wrapt wrapt" >> ~/.zshrc
-    echo "fi" >> ~/.zshrc
-    echo "" >> ~/.zshrc
-fi
-if type wrapt >/dev/null 2>&1 && [ -f ~/.bashrc ] && ! grep -q 'wrapt' ~/.bashrc; then
-    if [ ! -f "$HOME/.wrapt.comp" ]; then
-        wget -qO ~/.wrapt.comp "https://raw.githubusercontent.com/simoniz0r/wrapt/master/wrapt.comp"
-    fi
-    echo "" >> ~/.bashrc
-    echo "if [ -f "$HOME/.wrapt.comp" ]; then" >> ~/.bashrc
-    echo "    source "$HOME"/.wrapt.comp" >> ~/.bashrc
-    echo "    complete -F _wraptbash wrapt" >> ~/.bashrc
-    echo "fi" >> ~/.bashrc
-    echo "" >> ~/.bashrc
-fi
-
-# INPUT_@=($@)
-# @="${INPUT_@[@]:1}"
+# detect arguments and route them to apt or dpkg commands
 case $1 in
     l|list)
         shift
@@ -207,10 +185,6 @@ case $1 in
         apt-add-repository "$@"
         ;;
     help|*)
-        if grep -q 'wrapt' ~/.zshrc; then
-            rm -f "$HOME"/.wrapt.comp
-            wget -qO ~/.wrapt.comp "https://raw.githubusercontent.com/simoniz0r/wrapt/master/wrapt.comp"
-        fi
         helpfunc
         ;;
 esac    
