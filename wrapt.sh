@@ -64,13 +64,13 @@ case "$1" in
                 ;;
             *)
                 # otherwise run apt list
-                apt list "$@"
+                /usr/bin/apt list "$@"
                 ;;
         esac
         ;;
     se|search)
         shift
-        apt search "$@"
+        /usr/bin/apt search "$@"
         ;;
     info|if)
         shift
@@ -97,7 +97,7 @@ case "$1" in
                 ;;
             *)
                 # otherwise run apt list
-                apt show "$@"
+                /usr/bin/apt show "$@"
                 ;;
         esac
         ;;
@@ -147,43 +147,43 @@ case "$1" in
         ;;
     in|install)
         shift
-        apt update && sudo apt install "$@"
+        /usr/bin/apt update && sudo /usr/bin/apt install "$@"
         ;;
     rm|remove)
         shift
         case "$1" in
             -p|--purge)
                 shift
-                apt remove --purge "$@"
+                /usr/bin/apt remove --purge "$@"
                 ;;
             -arm|--autoremove)
                 shift
-                apt remove --autoremove "$@"
+                /usr/bin/apt remove --autoremove "$@"
                 ;;
             -par|--purge-autoremove)
                 shift
-                apt remove --purge --autoremove "$@"
+                /usr/bin/apt remove --purge --autoremove "$@"
                 ;;
             *)
-                apt remove "$@"
+                /usr/bin/apt remove "$@"
                 ;;
         esac
         ;;
     par|purge-autoremove)
         shift
-        apt remove --purge --autoremove "$@"
+        /usr/bin/apt remove --purge --autoremove "$@"
         ;;
     arm|autoremove)
         shift
-        apt autoremove "$@"
+        /usr/bin/apt autoremove "$@"
         ;;
     up|update|upgrade)
         shift
-        apt update && sudo apt upgrade "$@"
+        /usr/bin/apt update && sudo /usr/bin/apt upgrade "$@"
         ;;
     fup|full-upgrade)
         shift
-        apt update && sudo apt full-upgrade "$@"
+        /usr/bin/apt update && sudo /usr/bin/apt full-upgrade "$@"
         ;;
     ar|add-repo)
         shift
@@ -194,6 +194,6 @@ case "$1" in
         ;;
     *)
         # send anything else to apt
-        apt "$@"
+        /usr/bin/apt "$@"
         ;;
 esac
